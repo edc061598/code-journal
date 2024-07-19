@@ -1,0 +1,35 @@
+header {
+  background-color: #4C2676;
+  color: white;
+}
+
+body{
+  background-color: lightgray;
+}
+
+
+#placeholder-image-square{
+  width:300px;
+}
+
+button {
+  border-radius: 30px;
+  background-color: #4C2676;
+  color: white;
+}
+
+label{
+  display:block;
+}
+
+.button-container{
+  width: 100%;
+  display: flex;
+  justify-content: end;
+}
+
+
+
+#notes {
+  width: 100%;
+}

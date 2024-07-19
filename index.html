@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -20,7 +20,7 @@
       <div class="container">
         <div class="row">
           <div class="column-full">
-            <h1> Code Journal </h1>
+            <h1>Code Journal</h1>
           </div>
         </div>
       </div>
@@ -28,54 +28,46 @@
 
     <main class="container">
       <div data-view="entry-form">
-
         <form id="contact-form">
-
           <div class="row">
             <div class="column-full">
-              <h1 id="new-entry">New Entry </h1>
+              <h1 id="new-entry">New Entry</h1>
             </div>
           </div>
 
           <div class="row">
             <div class="column-half">
-              <img id="placeholder-image-square" src="images/placeholder-image-square.jpg" alt="photo-placeholder">
+              <img
+                id="placeholder-image-square"
+                src="images/placeholder-image-square.jpg"
+                alt="photo-placeholder" />
             </div>
             <div class="column-half">
               <label>Title</label>
-              <input
-              required
-              type="text"
-              id="title"
-              name="title"
-              />
-                  <label for="photo-url">Photo URL</label>
-              <input
-              required
-              type="text"
-              id="URL"
-              name="photo"/>
-
+              <input required type="text" id="title" name="title" />
+              <label for="photo-url">Photo URL</label>
+              <input required type="text" id="URL" name="photo" />
             </div>
-        </div>
-
-        <div class="row">
-          <div class="column-full">
-            <label>Notes</label>
-            <textarea name="notes" id="notes" cols="110" rows="10"></textarea>
-            </div>
-            </div>
-
-
-
-
-        <div class="row">
-          <div class="column-full button-container">
-              <button type="submit"> Save </button>
           </div>
-        </div>
 
-       </form>
+          <div class="row">
+            <div class="column-full">
+              <label>Notes</label>
+              <textarea
+                required
+                name="notes"
+                id="notes"
+                cols="110"
+                rows="10"></textarea>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="column-full button-container">
+              <button type="submit">Save</button>
+            </div>
+          </div>
+        </form>
       </div>
       <div data-view="entries" class="hidden"></div>
     </main>

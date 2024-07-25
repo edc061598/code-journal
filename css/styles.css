@@ -33,3 +33,39 @@ label{
 #notes {
   width: 100%;
 }
+
+.navbar{
+  color: white;
+  justify-content: space-between;
+}
+
+
+
+
+.new-button{
+  border-radius: 10px;
+  color: white;
+  text-decoration: none;
+  background-color: #4C2676;
+  padding: 15px;
+}
+
+img{
+  width: 100%;
+}
+
+.new-button-wrapper{
+  display: flex;
+  align-items: center;
+  height: 100%;
+  justify-content: flex-end;
+}
+
+.container{
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.code-journal{
+  font-size: 30px;
+}

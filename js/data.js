@@ -4,16 +4,16 @@ const data = readData();
 function readData() {
     let data;
     const localStorageData = localStorage.getItem(localStorageDataKey);
-    if (!localStorageData) {
+    if (localStorageData) {
+        data = JSON.parse(localStorageData);
+    }
+    else {
         data = {
             view: 'entry-form',
             entries: [],
             editing: null,
             nextEntryId: 1,
         };
-    }
-    else {
-        data = JSON.parse(localStorageData);
     }
     return data;
 }

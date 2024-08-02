@@ -196,7 +196,7 @@ $navBar.addEventListener('click', navBarFunction);
 
 function newButtonFunction(event: Event): void {
   const $eventTarget = event.target as HTMLElement;
-  const viewName = $eventTarget.dataset.view;\
+  const viewName = $eventTarget.dataset.view;
   if($h2Element != null){
   $h2Element.textContent = 'New Entry';
   }

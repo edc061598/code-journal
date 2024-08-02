@@ -69,3 +69,12 @@ img{
 .code-journal{
   font-size: 30px;
 }
+
+.fa-solid.fa-pencil {
+display: flex;
+justify-content: flex-end;
+}
+
+.entry-list{
+  list-style-type: none;
+}

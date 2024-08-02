@@ -27,6 +27,15 @@ if(!$navBar) throw new Error('$navBar does not exist');
 const $newButton = document.querySelector('.new-button');
 if(!$newButton) throw new Error ('$newButton does not exist');
 
+const $inputTitle = document.getElementById('title') as HTMLInputElement;
+if(!$inputTitle) throw new Error('$inputTitle does not exist');
+
+const $notes = document.getElementById('notes') as HTMLInputElement;
+if(!$notes) throw new Error('$notes does not exist');
+
+const $h2Element = document.getElementById('new-entry');
+if(!$h2Element) throw new Error('$h2Element does not exist');
+
 function inputFunction():void {
   const values = $input.value;
   if($photoUrl){
@@ -49,34 +58,43 @@ interface Entry {
   title: string,
   photo: string,
   notes: string,
-  entryId: number;
+  entryId: number,
 }
 
 function submitFunction(event:Event):void{
   event.preventDefault();
   const $formElements = $submit.elements as FormElement;
-  const objectForm: Entry = {
+  let objectForm: Entry = {
      entryId : data.nextEntryId,
      title : $formElements.title.value,
      photo : $formElements.photo.value,
      notes : $formElements.notes.value,
   };
+  if(data.editing === null){
       data.nextEntryId++;
     data.entries.unshift(objectForm);
 
     $photoUrl.src = 'images/placeholder-image-square.jpg';
     $entryList?.prepend(renderEntry(objectForm));
-       writeData();
+
+  } else if (data.editing !== null) {
+      objectForm.entryId = data.editing.entryId;
+    updateEntries(objectForm);
+      data.entries.unshift();
+      const $newLi = liEntriesFunction(data.editing.entryId);
+      $newLi.replaceWith(renderEntry(objectForm))
+      data.editing = null;
+    }
+    writeData();
    resetForm();
     toggleNoEntries();
-
-
     viewSwap('entries');
 
 }
 
+
 $submit.addEventListener('submit', submitFunction);
-//console.log($submit.addEventListener('submit', submitFunction));
+
 
 function resetForm(): void{
   $photoUrl.src = 'images/placeholder-image-square.jpg';
@@ -108,11 +126,17 @@ function renderEntry(entry: Entry): HTMLLIElement{
   const $notesEntry = document.createElement('p');
   $notesEntry.textContent = entry.notes;
 
+  const $pencilIcon = document.createElement('i');
+  $pencilIcon.className = 'fa-solid fa-pencil';
+  $pencilIcon.setAttribute('data-entry-id', entry.entryId.toString());
+
+
     $entry.append($row);
     $row.append($columnHalfLeft, $columnHalfRight);
     $columnHalfLeft.append($imageWrapper);
     $imageWrapper.append($image);
     $columnHalfRight.append($hTag, $notesEntry);
+    $hTag.append($pencilIcon);
 
     return $entry;
 }
@@ -125,14 +149,13 @@ function domContentLoaded(): void{
     const entry = data.entries[i];
     $entryList.append(renderEntry(entry));
   }
-  console.log(data.view);
   const currentView = data.view;
   viewSwap(currentView);
   toggleNoEntries();
 }
 
 document.addEventListener('DOMContentLoaded', domContentLoaded);
-//console.log(document.addEventListener('DOMContentLoaded', domContentLoaded));
+
 
 function toggleNoEntries(): void {
   if(!$noEntries){
@@ -174,11 +197,66 @@ $navBar.addEventListener('click', navBarFunction);
 function newButtonFunction(event: Event): void {
   const $eventTarget = event.target as HTMLElement;
   const viewName = $eventTarget.dataset.view;
+  if($h2Element != null){
+  $h2Element.textContent = 'New Entry';
+  }
   if(viewName === 'entries' || viewName === 'entry-form'){
-    console.log('test');
     resetForm();
     viewSwap(viewName);
   }
 }
 
 $newButton.addEventListener('click', newButtonFunction);
+
+
+function ulFunction(event: Event):void {
+
+  const $eventTarget = event.target as HTMLElement;
+  const $pencilIcon = $eventTarget.getAttribute('data-entry-id');
+ if($h2Element != null){
+  $h2Element.textContent = 'Edit Entry' ;
+  }
+    if($eventTarget.className === 'fa-solid fa-pencil'){
+
+      if($pencilIcon){
+        for(let i:number = 0; i < data.entries.length; i++){
+          if(data.entries[i].entryId.toString() === $pencilIcon){
+            data.editing = data.entries[i];
+          }
+        }
+
+        if(data.editing){
+          $input.value = data.editing.photo;
+          $inputTitle.value = data.editing.title;
+          $notes.value = data.editing.notes;
+          $photoUrl.setAttribute('src', $input.value);
+          viewSwap('entry-form');
+        }
+      }
+
+    }
+}
+
+$entryList.addEventListener('click', ulFunction);
+
+
+function updateEntries(formEntry: Entry): void {
+  const newEntries = data.entries.map((objectForm) => {
+    if(objectForm.entryId === formEntry.entryId){
+      return formEntry;
+    } else {
+      return objectForm;
+    }
+  });
+  data.entries = newEntries;
+}
+
+
+function liEntriesFunction(entryId: number): HTMLLIElement | void {
+  const $li = document.querySelectorAll('li');
+  for(const li of $li){
+    if(Number(li.getAttribute('data-entry-id')) === entryId){
+      return li;
+    }
+  }
+}

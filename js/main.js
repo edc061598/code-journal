@@ -30,9 +30,6 @@ if (!$newButton)
 const $deleteButton = document.querySelector('.delete-button');
 if (!$deleteButton)
     throw new Error('$deleteButton does not exist');
-const $confirmButton = document.querySelector('.confirm');
-if (!$confirmButton)
-    throw new Error('$confirmButton does not exist');
 const $dialog = document.querySelector('dialog');
 if (!$dialog)
     throw new Error('$dialog does not exist');
@@ -82,7 +79,7 @@ function submitFunction(event) {
     viewSwap('entries');
 }
 $submit.addEventListener('submit', submitFunction);
-//console.log($submit.addEventListener('submit', submitFunction));
+// console.log($submit.addEventListener('submit', submitFunction));
 function resetForm() {
     $photoUrl.src = 'images/placeholder-image-square.jpg';
     $submit.reset();
@@ -128,7 +125,7 @@ function domContentLoaded() {
     toggleNoEntries();
 }
 document.addEventListener('DOMContentLoaded', domContentLoaded);
-//console.log(document.addEventListener('DOMContentLoaded', domContentLoaded));
+// console.log(document.addEventListener('DOMContentLoaded', domContentLoaded));
 function toggleNoEntries() {
     if (!$noEntries) {
         throw new Error('$noEntries does not exist');
@@ -166,9 +163,9 @@ function newButtonFunction(event) {
         $h2Element.textContent = 'New Entry';
     }
     if (viewName === 'entries' || viewName === 'entry-form') {
-        console.log('test');
         resetForm();
         viewSwap(viewName);
+        $deleteButton?.classList.add('hide');
     }
 }
 $newButton.addEventListener('click', newButtonFunction);
@@ -191,6 +188,7 @@ function ulFunction(event) {
                 $notes.value = data.editing.notes;
                 $photoUrl.setAttribute('src', $input.value);
                 viewSwap('entry-form');
+                $deleteButton?.classList.remove('hide');
             }
         }
     }
@@ -215,11 +213,36 @@ function liEntriesFunction(entryId) {
         }
     }
 }
-function confirmationModalFunction() {
-    const $dialog = document.querySelector('dialog');
-    $dialog?.showModal();
-}
-function cancelModalFunction() {
-    const $dialog = document.querySelector('dialog');
-    $dialog?.close();
+$deleteButton.addEventListener('click', () => {
+    $dialog.showModal();
+});
+const $cancelModal = document.querySelector('.cancel-modal');
+if ($cancelModal)
+    throw new Error('$cancelModal does not exist');
+console.log($cancelModal);
+$cancelModal.addEventListener('click', () => {
+    $dialog.close();
+});
+const $confirmModal = document.querySelector('.confirm-modal');
+if ($confirmModal)
+    throw new Error('$confirmModal does not exist');
+$confirmModal.addEventListener('click', () => {
+    if (!data.editing) {
+        return;
+    }
+    if (!$dialog) {
+        throw new Error('$dialog is null');
+    }
+    deleteEntries(data.editing.entryId);
+    liEntriesFunction(data.editing.entryId).remove();
+    $dialog.close();
+    data.editing = null;
+    writeData();
+    toggleNoEntries();
+    resetForm();
+    viewSwap('entries');
+});
+function deleteEntries(entryId) {
+    const entriesArray = data.entries.filter((entry) => entry.entryId !== entryId);
+    data.entries = entriesArray;
 }

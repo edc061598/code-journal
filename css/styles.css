@@ -11,7 +11,7 @@ body {
   width: 300px;
 }
 
-button {
+.save-button {
   border-radius: 30px;
   background-color: #4c2676;
   color: white;
@@ -24,7 +24,7 @@ label {
 .button-container {
   width: 100%;
   display: flex;
-  justify-content: end;
+  justify-content: space-between;
 }
 
 #notes {
@@ -71,4 +71,16 @@ img {
 
 .entry-list {
   list-style-type: none;
+}
+
+.hide {
+  visibility: hidden;
+}
+
+.delete-button {
+  color: red;
+  text-decoration-line: underline;
+  background-color: transparent;
+  text-transform: none;
+  border: none;
 }
